@@ -20,7 +20,7 @@ const loadData = async () => {
   const url = `https://www.thesportsdb.com/api/v1/json/2/searchplayers.php?p=${inputText}`;
   const response = await fetch(url);
   const data = await response.json();
-  if (data.player === null) {
+  if (data.player) {
     showElement("loading-sipnner", "none");
     showElement("error-msg", "block");
   } else {
