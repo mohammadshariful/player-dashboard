@@ -4,14 +4,28 @@ const getValue = (inputId) => {
   input.value = "";
   return inputText;
 };
+//
+const showElement = (inputId, display) => {
+  document.getElementById(inputId).style.display = display;
+};
+
+// elements selects
 const container = document.getElementById("container");
 const loadData = async () => {
   container.textContent = "";
+  showElement("loading-sipnner", "block");
+  showElement("error-msg", "none");
+
   const inputText = getValue("input-field");
   const url = `https://www.thesportsdb.com/api/v1/json/2/searchplayers.php?p=${inputText}`;
   const response = await fetch(url);
   const data = await response.json();
-  displayData(data.player);
+  if (data.player === null) {
+    showElement("loading-sipnner", "none");
+    showElement("error-msg", "block");
+  } else {
+    displayData(data.player);
+  }
 };
 
 const displayData = (players) => {
@@ -60,13 +74,7 @@ const displayData = (players) => {
                 </div>
       `;
     container.appendChild(div);
-    // delete details
-    const deleteBtn = document.querySelectorAll(".delete-btn");
-    deleteBtn.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.target.parentNode.parentNode.parentNode.remove(e.target);
-      });
-    });
+    showElement("loading-sipnner", "none");
   });
 };
 // delete details
